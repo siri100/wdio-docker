@@ -1,0 +1,34 @@
+##Test Automation using, WebdriverIO, TypeScript, Mocha
+#Tech Stack
+1.	WebdriverIO: A Selenium WebDriver API binding for Node.js, WebdriverIO provides a simple API to automate web and browser apps in a fast and scalable way.
+2.	Mocha: A feature-rich JavaScript test framework widely used for testing JavaScript code. It can run on both Node.js and in the browser, making it versatile.
+
+##Getting Started
+#Pre-requisites
+1.	Node.js installed globally on the system.
+2.	Chrome browser installed.
+3.	Docker Container Setup in local machine
+4.	A text editor/IDE (Optional) like Sublime, Visual Studio Code, or Brackets.
+
+
+##Installation
+#Setup Scripts
+1.	Clone the repository into a folder.
+2.	Navigate to the folder and run the following command from the terminal/command prompt: "npm install"
+This will install all dependencies from package.json into node_modules folder.
+
+##Command to run tests :
+1. To run local  test : "npm run local:test"
+Note : Before you run tests on docker you need to start images locally using this command inside docker folder: " docker-compose -f .\docker-compose-hubNode.yml up -d"
+2. To run test on docker: "npm run docker:test"
+3. To run reports after test is executed : "npm run report"
+
+
+##Project Structure
+#This project is built on the Page Object Model Framework using WebdriverIO and Mocha. The folder structure is organized as follows:
+
+1. Configs: Contains all necessary configuration files required in the project. The WebdriverIO config file within this folder defines all required configurations for setting up scenarios.
+2. PageObjects: Contains .ts files structured according to the Page Object Model. Each class corresponds to a screen/page in the application, storing locators and action functions specific to that screen/page. The BasePage.ts file contains common action functions utilized across all pages/screen classes to interact with elements, e.g., click, setValue.
+3. Specs: Contains spec files written in the Mocha framework, where the actual test case scenarios are defined.
+4. TestData: Contains testData.ts, which includes all the test data required for the project in JSON format.
+5. Docker: Contains the Docker Compose file where all Docker images are defined.

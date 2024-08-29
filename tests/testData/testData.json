@@ -1,0 +1,17 @@
+{
+
+    "base_url": "https://www.volvocars.com/intl/v/car-safety/a-million-more",
+    "base_url_wdio": "https://webdriver.io/",
+    
+    "homePageWelcomText1" : "Safety",
+    "HomePageWelcomTextWDIO_test_data" : "Next-gen browser and mobile automation test framework for Node.js",
+    "homePageWelcomPara" : "Volvo Cars has been a leader in automotive safety for decades, caring about the world we live in and the people around us. With our Safe Space Technology which includes all the standard safety features in a Volvo car, we help to keep you safe and make you feel safe.",
+
+    "section1" : "Zero collisions",
+    "section2" : "Our learning never ends...",
+    "section3" : "All recharge models",
+    "CareKeyText" : "We've recently introduced the Care Key, aimed at addressing speeding. With the Care Key, Volvo car owners can put a speed cap on the ca"
+
+
+
+}
