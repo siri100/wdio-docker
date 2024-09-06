@@ -1,0 +1,69 @@
+name: Run WebdriverIO Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      selenium:
+        image: selenium/hub:latest
+        ports:
+          - 4442:4442
+          - 4443:4443
+          - 4444:4444
+      chrome:
+        image: selenium/node-chrome:latest
+        shm_size: 2gb
+        depends_on:
+          - selenium
+        environment:
+          SE_EVENT_BUS_HOST: selenium
+          SE_EVENT_BUS_PUBLISH_PORT: 4442
+          SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+          SE_NODE_MAX_SESSIONS: 2
+          VNC_NO_PASSWORD: 1
+      edge:
+        image: selenium/node-edge:latest
+        shm_size: 2gb
+        depends_on:
+          - selenium
+        environment:
+          SE_EVENT_BUS_HOST: selenium
+          SE_EVENT_BUS_PUBLISH_PORT: 4442
+          SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+          SE_NODE_MAX_SESSIONS: 2
+          VNC_NO_PASSWORD: 1
+      firefox:
+        image: selenium/node-firefox:4.1.2-20220217
+        shm_size: 2gb
+        depends_on:
+          - selenium
+        environment:
+          SE_EVENT_BUS_HOST: selenium
+          SE_EVENT_BUS_PUBLISH_PORT: 4442
+          SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+          SE_NODE_MAX_SESSIONS: 2
+          VNC_NO_PASSWORD: 1
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run WebdriverIO tests
+      run: npm run test
