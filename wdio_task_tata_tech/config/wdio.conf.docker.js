@@ -44,7 +44,7 @@ export const config = {
     // files and you set maxInstances to 10, all spec files will get tested at the same time
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
-    //
+    //test
     maxInstances: 5,
     port: 4444,
     //
