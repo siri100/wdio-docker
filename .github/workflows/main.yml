@@ -56,4 +56,4 @@ jobs:
         done
 
     - name: Run WebdriverIO tests
-      run: npm run test -- --logLevel debug
+      run: npm run docker:test
