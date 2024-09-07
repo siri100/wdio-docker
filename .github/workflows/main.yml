@@ -11,27 +11,31 @@ on:
 jobs:
   wdio-tests:
     runs-on: ubuntu-latest
-    container:
-      image: node:18-bullseye-slim
+
+    services:
+      selenium:
+        image: selenium/standalone-chrome:latest
+        options: --shm-size=2g
+        ports:
+          - 4444:4444
 
     steps:
-      - name: Checkout code
+      # Checkout the repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Chrome
-        run: |
-          apt-get update
-          apt-get install -y wget gnupg
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
-          sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-          apt-get update
-          apt-get install -y google-chrome-stable xvfb
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
 
-      - name: Install Node dependencies
-        run: npm install
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
 
+      # Run WebdriverIO Tests
       - name: Run WebdriverIO Tests
-        run: |
-          export DISPLAY=:99
-          Xvfb :99 -screen 0 1280x1024x24 &
-          npm run local:test
+        env:
+          SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+        run: npm run local:test

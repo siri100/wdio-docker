@@ -6,6 +6,9 @@ export const config = {
     // WebdriverIO supports running e2e tests as well as unit and component tests.
     runner: 'local',
     
+    hostname: process.env.SELENIUM_REMOTE_URL || 'localhost',
+    port: 4444,
+    path: '/wd/hub',
     //
     // ==================
     // Specify Test Files
