@@ -55,7 +55,13 @@ export const config = {
         // capabilities for local browser web tests
         browserName: 'chrome',
         'goog:chromeOptions': {
-            args: ['--enable-encrypted-media'],
+            args: [
+                '--headless',
+                '--no-sandbox',
+                '--disable-gpu',
+                '--disable-dev-shm-usage',
+                '--remote-debugging-port=9222'
+              ]
             },
             browserName: 'chrome'
     }],
