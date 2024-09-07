@@ -23,7 +23,7 @@ export const config = {
     // will be called from there.
     //
     specs: [
-        'C:/webdriverio-volvo-19-08/tests/specs/**.spec.js'
+         '../tests/specs/**.spec.js'
     ],
     // Patterns to exclude.
     exclude: [

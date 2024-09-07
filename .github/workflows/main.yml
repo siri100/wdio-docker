@@ -1,4 +1,4 @@
-name: Run WebdriverIO Tests
+name: WebdriverIO Tests
 
 on:
   push:
@@ -9,42 +9,29 @@ on:
       - main
 
 jobs:
-  test:
+  wdio-tests:
     runs-on: ubuntu-latest
-
-    services:
-      selenium-hub:
-        image: selenium/hub:4.1.0
-        ports:
-          - 4444:4444
+    container:
+      image: node:18-bullseye-slim
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      - name: Wait for Selenium Hub to be ready
+      - name: Set up Chrome
         run: |
-          until curl --output /dev/null --silent --head --fail http://localhost:4444/wd/hub/status; do
-            echo "Waiting for Selenium Hub...";
-            sleep 5;
-          done
+          apt-get update
+          apt-get install -y wget gnupg
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+          sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          apt-get update
+          apt-get install -y google-chrome-stable xvfb
 
-      # Start Chrome Node with environment variables using Docker commands
-      - name: Start Chrome Node
-        run: |
-          docker run -d --network="host" \
-          -e SE_EVENT_BUS_HOST=localhost \
-          -e SE_EVENT_BUS_PUBLISH_PORT=4442 \
-          -e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 \
-          selenium/node-chrome:4.1.0
-
-      - name: Install dependencies
+      - name: Install Node dependencies
         run: npm install
 
-      - name: Run WebdriverIO tests
-        run: npm run docker:test
+      - name: Run WebdriverIO Tests
+        run: |
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1280x1024x24 &
+          npm run local:test
