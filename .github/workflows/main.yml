@@ -13,47 +13,38 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      selenium:
-        image: selenium/hub:latest
+      selenium-hub:
+        image: selenium/hub:4.1.0
         ports:
           - 4444:4444
-      chrome:
-        image: selenium/node-chrome:latest
-        ports:
-          - 5900:5900  # VNC port (optional for debugging)
-        volumes:
-          - /dev/shm:/dev/shm  # Fix for Chrome crashing
-      edge:
-        image: selenium/node-edge:latest
-        ports:
-          - 5901:5901  # VNC port (optional for debugging)
-        volumes:
-          - /dev/shm:/dev/shm  # Fix for Edge crashing
-      firefox:
-        image: selenium/node-firefox:latest
-        ports:
-          - 5902:5902  # VNC port (optional for debugging)
-        volumes:
-          - /dev/shm:/dev/shm  # Fix for Firefox crashing
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Wait for Selenium Hub to be ready
+        run: |
+          until curl --output /dev/null --silent --head --fail http://localhost:4444/wd/hub/status; do
+            echo "Waiting for Selenium Hub...";
+            sleep 5;
+          done
 
-    - name: Wait for Selenium Hub to be ready
-      run: |
-        until curl --output /dev/null --silent --head --fail http://localhost:4444/wd/hub/status; do
-          echo "Waiting for Selenium Hub...";
-          sleep 5;
-        done
+      # Start Chrome Node with environment variables using Docker commands
+      - name: Start Chrome Node
+        run: |
+          docker run -d --network="host" \
+          -e SE_EVENT_BUS_HOST=localhost \
+          -e SE_EVENT_BUS_PUBLISH_PORT=4442 \
+          -e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 \
+          selenium/node-chrome:4.1.0
 
-    - name: Run WebdriverIO tests
-      run: npm run docker:test -- --logLevel debug
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run WebdriverIO tests
+        run: npm run test
