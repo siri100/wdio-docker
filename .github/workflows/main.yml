@@ -17,7 +17,7 @@ jobs:
       chrome:
         image: selenium/node-chrome:latest
         ports:
-          - 5900:5900  # VNC for Chrome debugging
+          - 5900:5900 
         env:
           SE_EVENT_BUS_HOST: selenium-hub
           SE_EVENT_BUS_PUBLISH_PORT: 4442
@@ -25,7 +25,7 @@ jobs:
       edge:
         image: selenium/node-edge:latest
         ports:
-          - 5901:5901  # VNC for Edge debugging
+          - 5901:5901
         env:
           SE_EVENT_BUS_HOST: selenium-hub
           SE_EVENT_BUS_PUBLISH_PORT: 4442
