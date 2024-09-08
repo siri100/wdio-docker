@@ -1,41 +1,47 @@
-name: WebdriverIO Tests
+name: Run WebdriverIO Tests
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  wdio-tests:
+  test:
     runs-on: ubuntu-latest
 
     services:
-      selenium:
-        image: selenium/standalone-chrome:latest
-        options: --shm-size=2g
+      selenium-hub:
+        image: selenium/hub:latest
         ports:
           - 4444:4444
+      chrome:
+        image: selenium/node-chrome:latest
+        ports:
+          - 5900:5900 # for VNC access
+        env:
+          SE_EVENT_BUS_HOST: selenium-hub
+          SE_EVENT_BUS_PUBLISH_PORT: 4442
+          SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+      edge:
+        image: selenium/node-edge:latest
+        ports:
+          - 5900:5900 # VNC for debugging
+        env:
+          SE_EVENT_BUS_HOST: selenium-hub
+          SE_EVENT_BUS_PUBLISH_PORT: 4442
+          SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
 
     steps:
-      # Checkout the repository
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      # Set up Node.js
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: '18.x'
+          node-version: "16"
 
-      # Install dependencies
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      # Run WebdriverIO Tests
-      - name: Run WebdriverIO Tests
-        env:
-          SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-        run: npm run local:test
+      - name: Run tests
+        run: npm run test

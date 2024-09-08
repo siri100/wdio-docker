@@ -59,7 +59,7 @@ export const config = {
         browserName: 'chrome',
         'goog:chromeOptions': {
             args: [
-                '--headless',
+                //'--headless',
                 '--no-sandbox',
                 '--disable-gpu',
                 '--disable-dev-shm-usage',
@@ -115,7 +115,7 @@ export const config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['chromedriver'],
+    services: ['docker'],
     chromedriver: {
         chromedriverAutoInstall: true,  // Automatically download the appropriate ChromeDriver
     },

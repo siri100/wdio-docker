@@ -103,7 +103,7 @@ export const config = {
     hostname : 'localhost',
     capabilities:[
         {
-            maxInstances: 1,
+            maxInstances: 5,
             browserName: 'chrome',
             acceptInsecureCerts: true,
             'goog:chromeOptions': {
@@ -112,7 +112,7 @@ export const config = {
         
           },
           {
-            maxInstances: 1,
+            maxInstances: 5,
             browserName: 'MicrosoftEdge',
             acceptInsecureCerts: true,
             'moz:firefoxOptions': {
