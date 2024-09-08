@@ -1,4 +1,4 @@
-name: Run WebdriverIO Tests
+name: Run WebdriverIO Tests on Microsoft Edge and Chrome
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
       chrome:
         image: selenium/node-chrome:latest
         ports:
-          - 5900:5900 # for VNC access
+          - 5900:5900  # VNC for Chrome debugging
         env:
           SE_EVENT_BUS_HOST: selenium-hub
           SE_EVENT_BUS_PUBLISH_PORT: 4442
@@ -25,7 +25,7 @@ jobs:
       edge:
         image: selenium/node-edge:latest
         ports:
-          - 5900:5900 # VNC for debugging
+          - 5901:5901  # VNC for Edge debugging
         env:
           SE_EVENT_BUS_HOST: selenium-hub
           SE_EVENT_BUS_PUBLISH_PORT: 4442
@@ -38,10 +38,10 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "16"
+          node-version: '16'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
+      - name: Run WebdriverIO tests
         run: npm run test
