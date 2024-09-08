@@ -44,4 +44,4 @@ jobs:
         run: npm install
 
       - name: Run WebdriverIO tests
-        run: npm run test
+        run: npm run docker:test
